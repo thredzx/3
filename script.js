@@ -1,11 +1,13 @@
 // Default product data
 const defaultProducts = [
-    { id: 1, name: "Smartphone X", price: 599, image: "https://picsum.photos/seed/phone/400/300" },
-    { id: 2, name: "Designer Jacket", price: 120, image: "https://picsum.photos/seed/jacket/400/300" },
-    { id: 3, name: "Wireless Earbuds", price: 80, image: "https://picsum.photos/seed/earbuds/400/300" },
-    { id: 4, name: "Coffee Maker", price: 45, image: "https://picsum.photos/seed/coffee/400/300" },
-    { id: 5, name: "Running Shoes", price: 95, image: "https://picsum.photos/seed/shoes/400/300" },
-    { id: 6, name: "Smart Watch", price: 199, image: "https://picsum.photos/seed/watch/400/300" }
+    { id: 1, name: "Smartphone X", price: 599, category: "ELECTRONICS", image: "https://picsum.photos/seed/phone/400/300" },
+    { id: 2, name: "Designer Jacket", price: 120, category: "FASHION", image: "https://picsum.photos/seed/jacket/400/300" },
+    { id: 3, name: "Wireless Earbuds", price: 80, category: "ELECTRONICS", image: "https://picsum.photos/seed/earbuds/400/300" },
+    { id: 4, name: "Coffee Maker", price: 45, category: "HOME", image: "https://picsum.photos/seed/coffee/400/300" },
+    { id: 5, name: "Running Shoes", price: 95, category: "FASHION", image: "https://picsum.photos/seed/shoes/400/300" },
+    { id: 6, name: "Smart Watch", price: 199, category: "ELECTRONICS", image: "https://picsum.photos/seed/watch/400/300" },
+    { id: 7, name: "Gaming Mouse", price: 60, category: "ELECTRONICS", image: "https://picsum.photos/seed/mouse/400/300" },
+    { id: 8, name: "Backpack", price: 50, category: "FASHION", image: "https://picsum.photos/seed/backpack/400/300" }
 ];
 
 // Initialize products from localStorage or use defaults
@@ -25,11 +27,16 @@ function renderProducts() {
         const card = document.createElement('div');
         card.className = 'product-card';
         card.innerHTML = `
-            <img src="${product.image}" alt="${product.name}" class="product-image" referrerPolicy="no-referrer">
+            <div class="product-image-container">
+                <img src="${product.image}" alt="${product.name}" class="product-image" referrerPolicy="no-referrer">
+            </div>
             <div class="product-info">
+                <div class="product-category">${product.category || 'GENERAL'}</div>
                 <h3 class="product-title">${product.name}</h3>
-                <p class="product-price">$${product.price}</p>
-                <button class="buy-btn" onclick="addToCart(${product.id})">Buy Now</button>
+                <div class="product-footer">
+                    <p class="product-price">$${product.price}</p>
+                    <button class="add-to-cart-btn" onclick="addToCart(${product.id})">+</button>
+                </div>
             </div>
         `;
         grid.appendChild(card);
@@ -43,9 +50,7 @@ function addToCart(id) {
     const cartCountElement = document.getElementById('cart-count');
     if (cartCountElement) cartCountElement.textContent = cartCount;
     
-    // Find the button that was clicked (optional feedback)
-    const buttons = document.querySelectorAll('.buy-btn');
-    // In a real app, we'd target the specific button better, but for this demo:
+    // Simple feedback
     alert('Added to cart!');
 }
 
@@ -85,6 +90,9 @@ function editProduct(index) {
     document.getElementById('prod-name').value = product.name;
     document.getElementById('prod-price').value = product.price;
     document.getElementById('prod-image').value = product.image;
+    if (document.getElementById('prod-category')) {
+        document.getElementById('prod-category').value = product.category || '';
+    }
     document.getElementById('form-title').textContent = 'Edit Product';
     document.getElementById('submit-btn').textContent = 'Update Product';
     document.getElementById('cancel-btn').style.display = 'inline-block';
@@ -141,15 +149,16 @@ document.addEventListener('DOMContentLoaded', () => {
             const name = document.getElementById('prod-name').value;
             const price = document.getElementById('prod-price').value;
             const image = document.getElementById('prod-image').value;
+            const category = document.getElementById('prod-category') ? document.getElementById('prod-category').value : 'GENERAL';
             const editIndex = productForm.dataset.editIndex;
 
             if (editIndex !== undefined && editIndex !== "") {
                 // Update existing
-                products[editIndex] = { id: parseInt(id), name, price: parseFloat(price), image };
+                products[editIndex] = { id: parseInt(id), name, price: parseFloat(price), image, category };
                 delete productForm.dataset.editIndex;
             } else {
                 // Add new
-                products.push({ id: Date.now(), name, price: parseFloat(price), image });
+                products.push({ id: Date.now(), name, price: parseFloat(price), image, category });
             }
 
             saveProducts();
