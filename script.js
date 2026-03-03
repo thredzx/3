@@ -93,8 +93,46 @@ function editProduct(index) {
     document.getElementById('product-form').dataset.editIndex = index;
 }
 
+// Authentication Logic
+const ADMIN_PASSWORD = "jash@123";
+
+function checkAuth() {
+    const isAuth = sessionStorage.getItem('edu_admin_auth');
+    const currentPage = window.location.pathname;
+    
+    if (currentPage.includes('admin.html') && isAuth !== 'true') {
+        window.location.href = 'login.html';
+    }
+}
+
+function logout() {
+    sessionStorage.removeItem('edu_admin_auth');
+    window.location.href = 'index.html';
+}
+
 // Handle Form Submission
 document.addEventListener('DOMContentLoaded', () => {
+    // Check auth on admin page
+    checkAuth();
+
+    // Login Form Handler
+    const loginForm = document.getElementById('login-form');
+    if (loginForm) {
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const passwordInput = document.getElementById('password').value;
+            const errorMsg = document.getElementById('login-error');
+
+            if (passwordInput === ADMIN_PASSWORD) {
+                sessionStorage.setItem('edu_admin_auth', 'true');
+                window.location.href = 'admin.html';
+            } else {
+                errorMsg.style.display = 'block';
+                document.getElementById('password').value = '';
+            }
+        });
+    }
+
     const productForm = document.getElementById('product-form');
     if (productForm) {
         productForm.addEventListener('submit', (e) => {

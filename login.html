@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - EduCommerce</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body style="background-color: #f0f2f5;">
+    <div class="login-container">
+        <a href="index.html" class="logo" style="display: block; margin-bottom: 1rem;">Edu<span>Commerce</span></a>
+        <h2>Admin Login</h2>
+        <p>This area is restricted to administrators only.</p>
+        
+        <div id="login-error" class="error-message">Invalid password. Please try again.</div>
+        
+        <form id="login-form" class="login-form">
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" required placeholder="Enter admin password" 
+                       style="width: 100%; padding: 0.8rem; border: 1px solid #ccc; border-radius: 4px; margin-top: 0.5rem;">
+            </div>
+            <button type="submit" class="login-btn">Login to Dashboard</button>
+        </form>
+        
+        <div style="margin-top: 1.5rem;">
+            <a href="index.html" style="color: #777; text-decoration: none; font-size: 0.9rem;">&larr; Back to Store</a>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
